@@ -1,0 +1,4 @@
+function logout(){localStorage.clear();location.href='/login'}
+function apiFetch(url,options={}){const token=localStorage.getItem('access_token');if(!token){location.href='/login';return Promise.reject(new Error('Sesión requerida'))}return fetch(url,{...options,headers:{'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${token}`,...(options.headers||{})}})}
+const money=value=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS'}).format(Number(value||0));
+if(location.pathname==='/dashboard'||location.pathname==='/ingresos'){const script=document.createElement('script');script.src='/static/js/recurrentes.js';document.body.appendChild(script)}
