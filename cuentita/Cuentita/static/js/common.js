@@ -1,0 +1,6 @@
+localStorage.removeItem('access_token');localStorage.removeItem('token_type');
+function csrfToken(){const cookie=document.cookie.split('; ').find(item=>item.startsWith('csrf_token='));return cookie?decodeURIComponent(cookie.slice('csrf_token='.length)):''}
+async function logout(){try{await fetch('/logout',{method:'POST',headers:{'X-CSRF-Token':csrfToken()},credentials:'same-origin'})}finally{location.href='/login'}}
+function apiFetch(url,options={}){const headers={'Accept':'application/json','X-CSRF-Token':csrfToken(),...(options.headers||{})};if(options.body&&!(options.body instanceof FormData)&&!headers['Content-Type'])headers['Content-Type']='application/json';return fetch(url,{...options,credentials:'same-origin',headers}).then(response=>{if(response.status===401)location.href='/login';return response})}
+const money=value=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS'}).format(Number(value||0));
+if(location.pathname==='/dashboard'||location.pathname==='/ingresos'){const script=document.createElement('script');script.src='/static/js/recurrentes.js';document.body.appendChild(script)}

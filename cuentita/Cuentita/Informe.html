@@ -1,0 +1,226 @@
+import os
+from weasyprint import HTML
+
+html_content = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Planificación del Proyecto: App Móvil de Control de Gastos</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 18mm 15mm;
+            background-color: #fdfbf7;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #2d3748;
+            margin: 0;
+            padding: 0;
+            font-size: 10pt;
+            line-height: 1.5;
+        }
+        .header {
+            border-bottom: 2px solid #2b6cb0;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #1a365d;
+            font-size: 18pt;
+            margin: 0 0 6px 0;
+        }
+        .header p {
+            color: #718096;
+            font-size: 9pt;
+            margin: 0;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 13pt;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            border-left: 4px solid #3182ce;
+            padding-left: 8px;
+            page-break-after: avoid;
+        }
+        h3 {
+            color: #2d3748;
+            font-size: 11pt;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+        p {
+            margin: 0 0 8px 0;
+        }
+        ul {
+            margin: 0 0 12px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        .box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 14px;
+            font-size: 9.5pt;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #ebf8ff;
+            color: #2c5282;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+        code {
+            background-color: #edf2f7;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 9pt;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>App Personal de Control de Gastos por Chat</h1>
+        <p>Documento de Arquitectura, Flujo y Estructura del Sistema</p>
+    </div>
+
+    <h2>1. Visión General del Sistema</h2>
+    <p>
+        El proyecto consiste en una aplicación móvil de uso estrictamente personal que permite registrar gastos diarios escribiendo un mensaje en lenguaje natural dentro de una interfaz de chat. Un backend auto-alojado en una notebook doméstica procesa los mensajes con Inteligencia Artificial, registra los datos y genera análisis visuales.
+    </p>
+
+    <h2>2. Componentes de la Arquitectura</h2>
+    <div class="box">
+        <h3>Cliente Móvil (Frontend)</h3>
+        <ul>
+            <li><strong>Tecnología:</strong> React Native (Expo) o Flutter.</li>
+            <li><strong>Pantallas principales:</strong> Interfaz de Chat (registro) y Dashboard (gráficos y reportes).</li>
+        </ul>
+
+        <h3>Servidor Doméstico (Backend)</h3>
+        <ul>
+            <li><strong>Alojamiento:</strong> Notebook siempre encendida conectada a la red local.</li>
+            <li><strong>Tecnología API:</strong> Node.js (Express) o Python (FastAPI).</li>
+            <li><strong>Procesamiento IA:</strong> API de Gemini para la extracción estructurada de entidades (monto, concepto, categoría).</li>
+            <li><strong>Acceso Remoto Seguro:</strong> Cloudflare Tunnel o VPN privada (Tailscale) para conectar el teléfono fuera de casa.</li>
+        </ul>
+
+        <h3>Base de Datos</h3>
+        <ul>
+            <li><strong>Motor:</strong> SQLite (base de datos relacional ligera en archivo único) o PostgreSQL.</li>
+        </ul>
+    </div>
+
+    <h2>3. Diseño de la Base de Datos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tabla</th>
+                <th>Campo</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>gastos</code></td>
+                <td>id</td>
+                <td>INTEGER PRIMARY KEY</td>
+                <td>Identificador único del gasto</td>
+            </tr>
+            <tr>
+                <td><code>gastos</code></td>
+                <td>monto</td>
+                <td>REAL / DECIMAL</td>
+                <td>Valor numérico del gasto</td>
+            </tr>
+            <tr>
+                <td><code>gastos</code></td>
+                <td>descripcion</td>
+                <td>TEXT</td>
+                <td>Detalle extraído del mensaje (ej. Nafta YPF)</td>
+            </tr>
+            <tr>
+                <td><code>gastos</code></td>
+                <td>categoria_id</td>
+                <td>INTEGER (FK)</td>
+                <td>Relación con la tabla de categorías</td>
+            </tr>
+            <tr>
+                <td><code>gastos</code></td>
+                <td>fecha</td>
+                <td>DATETIME</td>
+                <td>Fecha y hora del registro</td>
+            </tr>
+            <tr>
+                <td><code>categorias</code></td>
+                <td>id</td>
+                <td>INTEGER PRIMARY KEY</td>
+                <td>Identificador único de la categoría</td>
+            </tr>
+            <tr>
+                <td><code>categorias</code></td>
+                <td>nombre</td>
+                <td>TEXT</td>
+                <td>Nombre (ej. Alimentación, Transporte, Servicios)</td>
+            </tr>
+            <tr>
+                <td><code>categorias</code></td>
+                <td>color_hex</td>
+                <td>TEXT</td>
+                <td>Código de color para gráficos (ej. #3182ce)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Flujo de Datos y Registro</h2>
+    <ol>
+        <li>El usuario ingresa un texto en la app móvil: <i>"Pagué 4200 de supermercado"</i>.</li>
+        <li>La app envía el texto al backend local vía solicitud HTTPS.</li>
+        <li>El backend consulta la API de Gemini enviando un prompt con salida formateada en JSON.</li>
+        <li>Gemini devuelve: <code>{"monto": 4200, "categoria": "Alimentación", "descripcion": "Supermercado"}</code>.</li>
+        <li>El backend guarda la fila correspondiente en SQLite.</li>
+        <li>Se devuelve una respuesta al chat confirmando el registro del gasto.</li>
+    </ol>
+
+    <h2>5. Visualización y Estadísticas</h2>
+    <p>
+        La vista de estadísticas consultará directamente la base de datos para generar:
+    </p>
+    <ul>
+        <li><strong>Gráfico de Torta / Dona:</strong> Distribución porcentual de gastos por categoría en el mes seleccionado.</li>
+        <li><strong>Gráfico de Barras:</strong> Evolución diaria o semanal de gastos para detectar picos de consumo.</li>
+        <li><strong>Listado Histórico:</strong> Filtro por fechas con opción de eliminar o editar registros.</li>
+    </ul>
+
+</body>
+</html>
+"""
+
+with open("arquitectura_app_gastos.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+HTML("arquitectura_app_gastos.html").write_pdf("Planificacion_App_Gastos.pdf")
