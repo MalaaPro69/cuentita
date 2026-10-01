@@ -1,1 +1,0 @@
-"""Cuentita test suite."""
