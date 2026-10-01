@@ -1,0 +1,14 @@
+fastapi
+alembic
+httpx
+uvicorn[standard]
+sqlalchemy
+psycopg[binary]
+passlib[bcrypt]
+bcrypt==4.0.1
+python-jose[cryptography]
+google-genai
+python-dotenv
+pydantic
+email-validator
+python-multipart

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentita | Planificación</title>
+    <link rel="stylesheet" href="/static/css/app.css?v=20261001-planning">
+</head>
+<body>
+    <main class="container">
+        <header class="topbar">
+            <div class="brand">Cuentita</div>
+            <nav>
+                <a href="/menu">Menú</a>
+                <a href="/dashboard">Gastos</a>
+                <a class="active" href="/planificacion">Planificación</a>
+                <a href="/ingresos">Ingresos</a>
+                <a href="/inversiones">Inversiones</a>
+                <button class="logout" onclick="logout()">Salir</button>
+            </nav>
+        </header>
+
+        <section class="planning-intro">
+            <p class="eyebrow">ORGANIZA TUS GASTOS</p>
+            <h1>Planificación mensual</h1>
+            <p class="muted">Configura solo lo que te sirva. Los presupuestos y gastos fijos son opcionales.</p>
+        </section>
+
+        <div class="planning-grid">
+            <section class="card planning-card" aria-labelledby="budgetsTitle">
+                <div class="planning-card-heading">
+                    <div>
+                        <h2 id="budgetsTitle">Presupuestos</h2>
+                        <p class="muted">Define un límite mensual por categoría. Recibirás avisos visuales desde el 80%, sin bloquear gastos.</p>
+                    </div>
+                    <span class="optional-label">Opcional</span>
+                </div>
+
+                <form id="presupuestoForm" class="planning-form">
+                    <label for="presupuestoCategoria">Categoría</label>
+                    <select id="presupuestoCategoria">
+                        <option>Alimentación</option>
+                        <option>Transporte</option>
+                        <option>Servicios</option>
+                        <option>Entretenimiento</option>
+                        <option>Salud</option>
+                        <option>Compras</option>
+                        <option>General</option>
+                    </select>
+                    <label for="presupuestoMonto">Límite mensual</label>
+                    <input id="presupuestoMonto" type="number" min="0.01" step="0.01" placeholder="$ 50.000" required>
+                    <button type="submit">Guardar límite</button>
+                </form>
+                <p id="presupuestoStatus" class="status" aria-live="polite"></p>
+                <div id="presupuestosLista" class="budget-grid">
+                    <p class="muted">Cargando presupuestos…</p>
+                </div>
+            </section>
+
+            <section id="gastosFijosPanel" class="planning-card" aria-label="Gastos fijos mensuales">
+                <div class="card recurring-card">
+                    <h2>Gastos fijos mensuales</h2>
+                    <p class="muted">Cargando tus gastos fijos…</p>
+                </div>
+            </section>
+        </div>
+
+        <a class="back-link" href="/dashboard">← Volver a Gastos</a>
+    </main>
+    <script src="/static/js/common.js?v=20261001-planning"></script>
+    <script src="/static/js/planificacion.js?v=20261001-planning"></script>
+</body>
+</html>

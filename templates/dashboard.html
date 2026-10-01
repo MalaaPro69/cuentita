@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentita | Gastos</title>
+    <link rel="stylesheet" href="/static/css/app.css?v=20261001-date-filter">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <main class="container">
+        <header class="topbar">
+            <div class="brand">Cuentita</div>
+            <nav>
+                <a href="/menu">Menú</a>
+                <a class="active" href="/dashboard">Gastos</a>
+                <a class="nav-action" href="/planificacion">Presupuestos y gastos fijos</a>
+                <a href="/ingresos">Ingresos</a>
+                <a href="/inversiones">Inversiones</a>
+                <button class="logout" onclick="logout()">Salir</button>
+            </nav>
+        </header>
+
+        <section class="period-filter" aria-label="Filtrar gastos por mes">
+            <label for="filtroMes">Período</label>
+            <input id="filtroMes" type="month" aria-describedby="periodHint">
+        </section>
+
+        <section class="stats">
+            <div class="metric"><small>Total del período</small><strong id="totalMes">$0</strong></div>
+            <div class="metric"><small>Gastos registrados</small><strong id="cantidadGastos">0</strong></div>
+            <div class="metric"><small>Categoría mayor</small><strong id="categoriaMayor">-</strong></div>
+        </section>
+
+        <section class="forms">
+            <div class="card">
+                <h2>Agregar gasto</h2>
+                <form id="gastoForm">
+                    <input id="monto" type="number" step="0.01" placeholder="Monto" required>
+                    <input id="descripcion" placeholder="Descripción" required>
+                    <select id="categoria">
+                        <option>Alimentación</option><option>Transporte</option><option>Servicios</option>
+                        <option>Entretenimiento</option><option>Salud</option><option>Compras</option><option>General</option>
+                    </select>
+                    <button>Guardar gasto</button>
+                </form>
+                <p id="manualStatus" class="status" aria-live="polite"></p>
+            </div>
+            <div class="card">
+                <h2>Analizar con IA</h2>
+                <form id="iaForm">
+                    <textarea id="mensaje" rows="5" maxlength="2000" placeholder="Ej: Compré nafta por 1800" required></textarea>
+                    <button>Procesar con Gemini</button>
+                </form>
+                <p id="iaStatus" class="status" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <section class="charts">
+            <div class="card"><h2>Gastado por categoría</h2><canvas id="categoryChart"></canvas></div>
+            <div class="card"><h2>Evolución mensual</h2><canvas id="trendChart"></canvas></div>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <h2>Listado de gastos</h2>
+                <select id="filtroCategoria" aria-label="Filtrar gastos por categoría"><option value="Todas">Todas las categorías</option></select>
+            </div>
+            <div id="tablaGastos" class="expense-grid"></div>
+        </section>
+    </main>
+    <script src="/static/js/common.js?v=20261001-date-filter"></script>
+    <script src="/static/js/dashboard.js?v=20261001-date-filter"></script>
+</body>
+</html>

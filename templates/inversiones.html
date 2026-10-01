@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentita | Inversiones</title>
+    <link rel="stylesheet" href="/static/css/app.css?v=20261001-investment-currency">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <main class="container">
+        <header class="topbar">
+            <div class="brand">Cuentita</div>
+            <nav>
+                <a href="/menu">Menú</a>
+                <a href="/dashboard">Gastos</a>
+                <a href="/ingresos">Ingresos</a>
+                <a class="active" href="/inversiones">Inversiones</a>
+                <button class="logout" onclick="logout()">Salir</button>
+            </nav>
+        </header>
+
+        <section class="planning-intro">
+            <span class="eyebrow">PATRIMONIO</span>
+            <h1>Mi cartera</h1>
+            <p class="muted">Registrá lo que compraste en USD o ARS. El resumen y las cotizaciones de la cartera se muestran en USD.</p>
+        </section>
+
+        <section class="portfolio-summary" aria-label="Resumen de cartera">
+            <div class="metric">
+                <small>Valor actual</small>
+                <strong id="total">US$ 0</strong>
+                <span id="assetCount" class="metric-note">0 activos</span>
+            </div>
+            <div class="metric">
+                <small>Capital invertido</small>
+                <strong id="invested">US$ 0</strong>
+                <span class="metric-note">Equivalente en USD según la moneda y el cambio registrados</span>
+            </div>
+            <div class="metric" id="resultMetric">
+                <small>Resultado a la fecha</small>
+                <strong id="currentProfit">US$ 0</strong>
+                <span id="currentProfitPercent" class="metric-note">0,00% sobre el capital con costo registrado</span>
+            </div>
+            <div class="metric">
+                <small>Proyección estimada</small>
+                <strong id="profit">US$ 0</strong>
+                <span class="metric-note">Basada en el rendimiento estimado indicado por activo</span>
+            </div>
+        </section>
+
+        <section class="layout portfolio-layout">
+            <div class="card">
+                <h2 id="formTitle">Agregar inversión</h2>
+                <p class="muted">Ingresá el activo, la cantidad y el total que invertiste. Si invertiste en pesos, indicá también el tipo de cambio usado.</p>
+                <form id="investmentForm">
+                    <input type="hidden" id="editingId">
+                    <label>Activo
+                        <input id="activo" required maxlength="100" placeholder="Bitcoin, CEDEAR de Apple, fondo común">
+                    </label>
+                    <label>Cantidad
+                        <input id="cantidad" type="number" min="0.00000001" step="any" required placeholder="Ej: 0,25">
+                    </label>
+                    <label>Moneda de la inversión
+                        <select id="monedaInversion">
+                            <option value="USD">Dólares estadounidenses (USD)</option>
+                            <option value="ARS">Pesos argentinos (ARS)</option>
+                        </select>
+                    </label>
+                    <label><span id="montoInvertidoLabel">Total invertido (USD)</span>
+                        <input id="montoInvertido" type="number" min="0.01" step="any" required placeholder="Ej: 250">
+                    </label>
+                    <label id="tipoCambioField" hidden>Tipo de cambio usado (ARS por 1 USD)
+                        <input id="tipoCambioArsUsd" type="number" min="0.000001" step="any" placeholder="Ej: 1500" disabled>
+                    </label>
+                    <p id="currencyHint" class="field-hint" hidden>El capital se convertirá a USD con este tipo de cambio para calcular tu cartera. Se conservará el importe original en ARS.</p>
+                    <label>Rendimiento estimado (%)
+                        <input id="rendimiento" type="number" step="0.01" value="0" placeholder="Ej: 8">
+                    </label>
+                    <p class="field-hint">La proyección es orientativa y no representa una garantía de rendimiento.</p>
+                    <div class="investment-form-actions">
+                        <button id="saveButton" type="submit">Agregar inversión</button>
+                        <button id="cancelButton" type="button" class="secondary" hidden>Cancelar edición</button>
+                    </div>
+                </form>
+                <p id="status" class="status" aria-live="polite"></p>
+            </div>
+
+            <div class="card portfolio-chart-card">
+                <div class="section-head portfolio-chart-heading">
+                    <div>
+                        <h2>Distribución de la cartera</h2>
+                        <p class="muted">Participación de cada activo en el valor actual.</p>
+                    </div>
+                    <button id="refreshQuotes" type="button" class="secondary">Actualizar cotizaciones</button>
+                </div>
+                <p id="quoteStatus" class="quote-status muted" aria-live="polite">Las cotizaciones se actualizan solo cuando lo solicitás.</p>
+                <div class="portfolio-chart-wrap">
+                    <canvas id="portfolioChart" aria-label="Distribución del valor actual de la cartera"></canvas>
+                    <p id="chartEmpty" class="chart-empty" hidden>Agregá inversiones para ver la distribución.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div>
+                    <h2>Activos de la cartera</h2>
+                    <p class="muted">El resultado compara el valor actual con el capital registrado. En activos antiguos, revisá el precio de compra antes de confiar en el cálculo.</p>
+                </div>
+            </div>
+            <div id="portfolio" class="portfolio"></div>
+        </section>
+    </main>
+    <script src="/static/js/common.js?v=20261001-investment-currency"></script>
+    <script src="/static/js/inversiones.js?v=20261001-investment-currency"></script>
+</body>
+</html>
